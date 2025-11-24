@@ -301,6 +301,190 @@
                 grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             }
         }
+
+        @media (max-width: 1024px) {
+            h1 {
+                font-size: 2.8em;
+            }
+
+            .progress-summary {
+                gap: 25px;
+            }
+
+            th, td {
+                padding: 15px 12px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2.2em;
+                letter-spacing: 1px;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            header {
+                padding: 30px 15px;
+                margin-bottom: 40px;
+            }
+
+            .progress-summary {
+                gap: 15px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .stat-box {
+                padding: 15px 25px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .stat-number {
+                font-size: 2em;
+            }
+
+            .stat-label {
+                font-size: 1em;
+                margin-top: 0;
+            }
+
+            .table-container {
+                padding: 15px;
+                border-radius: 15px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table {
+                min-width: 800px;
+            }
+
+            th, td {
+                padding: 12px 10px;
+                font-size: 0.85em;
+            }
+
+            th {
+                padding: 15px 10px;
+            }
+
+            .section-cell {
+                font-size: 0.95em;
+            }
+
+            .session-cell {
+                font-size: 1em;
+            }
+
+            .tech-stack {
+                padding: 30px 20px;
+            }
+
+            .tech-stack h2 {
+                font-size: 1.6em;
+            }
+
+            .tech-grid {
+                grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+                gap: 15px;
+            }
+
+            .tech-item {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .subtitle {
+                font-size: 0.9em;
+            }
+
+            header {
+                padding: 20px 10px;
+                margin-bottom: 30px;
+            }
+
+            .stat-box {
+                padding: 12px 20px;
+            }
+
+            .stat-number {
+                font-size: 1.8em;
+            }
+
+            .stat-label {
+                font-size: 0.9em;
+            }
+
+            .table-container {
+                padding: 10px;
+            }
+
+            table {
+                min-width: 750px;
+            }
+
+            th, td {
+                padding: 10px 8px;
+                font-size: 0.8em;
+            }
+
+            .status-badge {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+
+            .tech-stack {
+                padding: 25px 15px;
+                margin-top: 40px;
+            }
+
+            .tech-stack h2 {
+                font-size: 1.4em;
+                margin-bottom: 20px;
+            }
+
+            .tech-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .tech-item {
+                padding: 12px;
+            }
+
+            .tech-item-name {
+                font-size: 1em;
+            }
+
+            .tech-item-type {
+                font-size: 0.8em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -333,7 +517,7 @@
                         <th>Session</th>
                         <th>Topic / Description</th>
                         <th>Build</th>
-                        <th>Remarks</th>
+                        <th style="min-width: 300px;">Remarks</th>
                         <th>Status</th>
                     </tr>
                 </thead>
