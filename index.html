@@ -1,0 +1,490 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVA DEV</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #00f5ff, #00d4ff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #888;
+            font-weight: 300;
+        }
+
+        .progress-summary {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px 35px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 245, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 245, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00f5ff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.2), rgba(138, 43, 226, 0.2));
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #00f5ff;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(0, 245, 255, 0.5);
+        }
+
+        tbody tr {
+            background: rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        tbody tr:hover {
+            background: rgba(0, 245, 255, 0.1);
+            transform: scale(1.01);
+            box-shadow: 0 5px 20px rgba(0, 245, 255, 0.2);
+        }
+
+        td {
+            padding: 20px 15px;
+            color: #e0e0e0;
+            vertical-align: top;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .section-cell {
+            font-weight: 600;
+            color: #00d4ff;
+            font-size: 1.05em;
+            border-left: 4px solid #00f5ff;
+            padding-left: 15px;
+        }
+
+        .session-cell {
+            text-align: center;
+            font-weight: 700;
+            color: #8a2be2;
+            font-size: 1.1em;
+        }
+
+        .topic-cell {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .description {
+            color: #aaa;
+            font-size: 0.9em;
+        }
+
+        .homework-cell {
+            background: rgba(138, 43, 226, 0.1);
+            border-left: 3px solid #8a2be2;
+            padding-left: 18px !important;
+            color: #dda0ff;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .status-badge.completed {
+            background: rgba(0, 255, 127, 0.2);
+            border: 1px solid rgba(0, 255, 127, 0.5);
+            color: #00ff7f;
+        }
+
+        .status-badge.pending {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid rgba(255, 193, 7, 0.5);
+            color: #ffc107;
+        }
+
+        .tech-stack {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .tech-stack h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #00d4ff;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 245, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 245, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .tech-item-name {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #00f5ff;
+            margin-bottom: 5px;
+        }
+
+        .tech-item-type {
+            font-size: 0.85em;
+            color: #888;
+        }
+
+        code {
+            background: rgba(0, 245, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #00f5ff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .progress-summary {
+                gap: 20px;
+            }
+
+            .table-container {
+                padding: 15px;
+            }
+
+            th, td {
+                padding: 12px 10px;
+                font-size: 0.85em;
+            }
+
+            .tech-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ EVA'S CODING ROADMAP</h1>
+            <p class="subtitle">Full-Stack Development + AI Integration Journey</p>
+            
+            <div class="progress-summary">
+                <div class="stat-box">
+                    <div class="stat-number">10/10</div>
+                    <div class="stat-label">Sessions pending</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Overall Progress</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Sessions Remaining</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Section</th>
+                        <th>Session</th>
+                        <th>Topic / Description</th>
+                        <th>Homework</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="section-cell" rowspan="5">🎨 Frontend (HTML, CSS, JS)</td>
+                        <td class="session-cell">1</td>
+                        <td class="topic-cell">
+                            <strong>Introduction to HTML</strong><br>
+                            <span class="description">Basic structure (<code>&lt;!DOCTYPE html&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;body&gt;</code>), and essential tags (<code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;a&gt;</code>, <code>&lt;img&gt;</code>).</span>
+                        </td>
+                        <td class="homework-cell">Build your own "About Me" webpage.</td>
+                        <td><span class="status-badge pending"> pending</span></td>
+                    </tr>
+                    <tr>
+                        <td class="session-cell">2</td>
+                        <td class="topic-cell">
+                            <strong>Styling with CSS</strong><br>
+                            <span class="description">Colors, fonts, borders, background, layout (margin, padding).</span>
+                        </td>
+                        <td class="homework-cell">Style your "About Me" page using CSS.</td>
+                        <td><span class="status-badge pending"> pending</span></td>
+                    </tr>
+                    <tr>
+                        <td class="session-cell">3</td>
+                        <td class="topic-cell">
+                            <strong>Advanced HTML</strong><br>
+                            <span class="description">Tables, audio, video, maps, and YouTube embeds.</span>
+                        </td>
+                        <td class="homework-cell">Create a "My Hobbies" page using tables and embedded content.</td>
+                        <td><span class="status-badge pending"> pending</span></td>
+                    </tr>
+                    <tr>
+                        <td class="session-cell">4</td>
+                        <td class="topic-cell">
+                            <strong>Introduction to JavaScript</strong><br>
+                            <span class="description">DOM manipulation, event handling, buttons, and interactivity.</span>
+                        </td>
+                        <td class="homework-cell">Add interactive buttons to change text and background color.</td>
+                        <td><span class="status-badge pending"> pending</span></td>
+                    </tr>
+                    <tr>
+                        <td class="session-cell">5</td>
+                        <td class="topic-cell">
+                            <strong>Final Project</strong><br>
+                            <span class="description">Combine HTML, CSS, and JS into a responsive webpage. Deploy on GitHub Pages.</span>
+                        </td>
+                        <td class="homework-cell">Make your webpage mobile-friendly and commit changes with Git. Publish your "Marvel Studios" project online.</td>
+                        <td><span class="status-badge pending"> pending</span></td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="section-cell" rowspan="2">🐍 Backend (Python + Flask)</td>
+                        <td class="session-cell">6</td>
+                        <td class="topic-cell">
+                            <strong>Python Fundamentals</strong><br>
+                            <span class="description">Variables, data types, loops, conditionals, and calculations.</span>
+                        </td>
+                        <td class="homework-cell">Write a Python script that calculates student grades.</td>
+                        <td><span class="status-badge pending"> pending</span></td>
+                    </tr>
+                    <tr>
+                        <td class="session-cell">7</td>
+                        <td class="topic-cell">
+                            <strong>Flask Framework. Connecting Frontend Forms to Flask</strong><br>
+                            <span class="description">Routes, templates, and running your first Flask app. Handling user input and saving responses </span>
+                        </td>
+                        <td class="homework-cell">Create a "Hello World" Flask project.</td>
+                        <td><span class="status-badge pending"> pending</span></td>
+                    </tr>
+                   
+
+                    <tr>
+                        <td class="section-cell" >🤖Introduction to AI & ML, Google Teachable Machine</td>
+                        <td class="session-cell">8</td>
+                        <td class="topic-cell">
+                            <strong>Understanding AI and Machine Learning & Integrating Gemini AI API</strong><br>
+                            <span class="description">Prompt engineering and responsible AI ethics. Build a custom model (e.g., image/sound classifier) Handling requests, responses, and error handling in Flask.</span>
+                        </td>
+                        <td class="homework-cell">Create your own ML model and Write a short essay: "How AI helps chatbots think. & Connect Gemini API to your chatbot and test real replies."</td>
+                        <td><span class="status-badge pending"> pending</span></td>
+                    </tr>
+                 
+                   
+                    
+
+                    <tr>
+                        <td class="section-cell">☁️ Hosting (HEROKU)</td>
+                        <td class="session-cell">9</td>
+                        <td class="topic-cell">
+                            <strong>Introduction to HEROKU & Deploying the full chatbot App</strong><br>
+                            <span class="description">Understanding servers, environment variables, GIT and Heroku CLI</span>
+                        </td>
+                        <td class="homework-cell">Create a Heroku account and host a sample Flask app. Deploy and share your live school chatbot link.</td>
+                        <td><span class="status-badge pending"> pending<</span></td>
+                    </tr>
+                    
+
+                    <tr>
+                        <td class="section-cell">🎓 Capstone Project</td>
+                        <td class="session-cell">10</td>
+                        <td class="topic-cell">
+                            <strong>Final Project: My School AI Assistant</strong><br>
+                            <span class="description">Combine frontend, backend, AI, and hosting.</span>
+                        </td>
+                        <td class="homework-cell">Submit GitHub repo + live link + reflection report.</td>
+                        <td><span class="status-badge pending"> pending<</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tech-stack">
+            <h2>🛠️ Tech Stack</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="tech-item-name">HTML5</div>
+                    <div class="tech-item-type">Markup</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-item-name">CSS3</div>
+                    <div class="tech-item-type">Styling</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-item-name">JavaScript</div>
+                    <div class="tech-item-type">Frontend</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-item-name">Python</div>
+                    <div class="tech-item-type">Backend</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-item-name">Flask</div>
+                    <div class="tech-item-type">Web Framework</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-item-name">Gemini AI</div>
+                    <div class="tech-item-type">AI API</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-item-name">Teachable Machine</div>
+                    <div class="tech-item-type">ML Platform</div>
+                </div>
+                
+                <div class="tech-item">
+                    <div class="tech-item-name">Git</div>
+                    <div class="tech-item-type">Version Control</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-item-name">GitHub Pages</div>
+                    <div class="tech-item-type">Static Hosting</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-item-name">HEROKU</div>
+                    <div class="tech-item-type">Cloud Hosting</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
